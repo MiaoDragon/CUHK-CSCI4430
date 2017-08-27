@@ -1,0 +1,17 @@
+Outbound:  (src == network)
+    port in table?
+        N:  if SYN, then create new entry
+            else, drop
+    IP, TCP header change
+Table delete:
+    if the end of 4-way handshake:  delete the FIN-2 entry
+    if RST:  delete the entry
+Table struct:
+    original ip, original port, tran port, state
+    * state = 0:  entry not in use
+    *         1:  in use, no FIN received
+    *         2:  first FIN received
+    *         3:  second FIN received (if ACK received, then delete)
+Output:
+    when table update, output:
+        original ip, original port, tran ip (public ip), tran port
